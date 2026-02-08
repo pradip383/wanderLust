@@ -1,0 +1,140 @@
+<% layout("../layouts/boilerPlate.ejs") %>
+<div class="row">
+  <div class="col col-6 offset-2 mt-3">
+    <h3><%=listing.title%></h3>
+  </div>
+  <div class="col col-6 offset-2">
+    <div class="card listing-card">
+      <img
+        class="card-img-top show-img"
+        src="<%=listing.image.url%>"
+        alt="listingImg"
+      />
+      <div class="card-body">
+        <br />
+        <p class="card-text">
+          owned by <i><%=listing.owner.username%> </i><br />
+        </p>
+        <p class="card-text"><%=listing.description%> <br /></p>
+        <p class="card-text">
+          &#8377;<%=listing.price?.toLocaleString("en-IN")%>/night <br />
+        </p>
+        <p class="card-text"><%=listing.location%> <br /></p>
+        <p class="card-text"><%=listing.country%> <br /></p>
+      </div>
+    </div>
+  </div>
+
+  <% if(currUser && currUser._id.equals(listing.owner._id)) { %>
+  <div class="btns">
+    <a
+      href="/listing/<%=listing._id%>/edit"
+      class="btn btn-dark edit-btn col-1 offset-2"
+      >edit</a
+    >
+
+    <form method="post" action="/listing/<%=listing._id%>?_method=Delete">
+      <button class="btn btn-dark dlt-btn offset-4">delete</button>
+    </form>
+  </div>
+  <% }%>
+
+  <div class="col-8 offset-2 mb-3 mt-3">
+    <% if(currUser) {%>
+    <h4>Leave a review</h4>
+    <form method="post" action="/listing/<%=listing._id%>/review">
+      <div class="mb-3 mt-3">
+        <label for="rating" class="form-label">Rating</label>
+        <fieldset class="starability-slot">
+          <input
+            type="radio"
+            id="no-rate"
+            class="input-no-rate"
+            name="review[rating]"
+            value="1"
+            checked
+            aria-label="No rating."
+          />
+          <input type="radio" id="first-rate1" name="review[rating]" value="1" />
+          <label for="first-rate1" title="Terrible">1 star</label>
+          <input type="radio" id="first-rate2" name="review[rating]" value="2" />
+          <label for="first-rate2" title="Not good">2 stars</label>
+          <input type="radio" id="first-rate3" name="review[rating]" value="3" />
+          <label for="first-rate3" title="Average">3 stars</label>
+          <input type="radio" id="first-rate4" name="review[rating]" value="4" />
+          <label for="first-rate4" title="Very good">4 stars</label>
+          <input type="radio" id="first-rate5" name="review[rating]" value="5" />
+          <label for="first-rate5" title="Amazing">5 stars</label>
+        </fieldset>
+      </div>
+
+      <div class="mb-3 mt-3">
+        <label for="comment" class="form-label">Comments</label>
+        <textarea
+          class="form-control"
+          rows="5"
+          cols="30"
+          name="review[comment]"
+          id="comment"
+          required
+        ></textarea>
+      </div>
+      <br />
+      <button class="btn btn-light btn-border-black">Submit</button>
+      <br />
+      <br />
+      <% } %>
+    </form>
+
+    <hr />
+    <div>
+      <% if(listing.reviews.length>0) {%>
+      <p><b>All reviews</b></p>
+      <div class="row">
+        <% for(review of listing.reviews) { %>
+        <div class="card col-5 ms-4 mb-2">
+          <div class="card-body">
+            <h5>@<%=review.author.username%></h5>
+            <p class="starability-result" data-rating="<%=review.rating%>">
+              Rated: 3 stars
+            </p>
+            <p><%=review.comment%></p>
+          </div>
+          <form
+            method="post"
+            action="/listing/<%=listing._id%>/review/<%=review._id%>?_method=Delete"
+          >
+            <button class="btn btn-sm btn-dark mb-3">Delete</button>
+          </form>
+        </div>
+        <% } %>
+      </div>
+      <% }%>
+    </div>
+  </div>
+    <div class="col-8 offset-2 mb-3 mt-3">
+      <h3>where you'll be</h3>
+      <div id="map"></div>
+    </div>
+</div>
+
+<script>
+	// TO MAKE THE MAP APPEAR YOU MUST
+	// ADD YOUR ACCESS TOKEN FROM
+	// https://account.mapbox.com
+    mapboxgl.accessToken = 'YOUR_MAPBOX_ACCESS_TOKEN';
+    const map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/standard', // Use the standard style for the map
+        projection: 'globe', // display the map as a globe
+        zoom: 1, // initial zoom level, 0 is the world view, higher values zoom in
+        center: [30, 15] // center the map on this longitude and latitude
+    });
+
+    map.addControl(new mapboxgl.NavigationControl());
+    map.scrollZoom.disable();
+
+    map.on('style.load', () => {
+        map.setFog({}); // Set the default atmosphere style
+    });
+</script>

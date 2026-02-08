@@ -1,0 +1,20 @@
+<% layout('../layouts/boilerPlate.ejs') %>
+<div class="row">
+  <div class="col-6 offset-3 ">
+    <h3 class="mt-3">login in WanderLust</h3>
+    <form class="mt-3" method="post" action="/login">
+      <label for="username" class="form-label">username</label>
+      <input name="username" id="username" class="form-control" required />
+
+      <label for="password" class="form-label">password</label>
+      <input
+        name="password"
+        id="password"
+        class="form-control"
+        type="password"
+        required
+      />
+      <button class="btn btn-success mt-3" >login</button>
+    </form> 
+  </div>
+</div>

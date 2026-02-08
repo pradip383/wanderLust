@@ -1,0 +1,73 @@
+<%- layout("../layouts/boilerPlate.ejs") %>
+<div class="row">
+  <div class="col-8 offset-2">
+    <h2>Fill the listing details</h2>
+    <form method="post" action="/listing/new" enctype="multipart/form-data">
+      <div class="mb-3">
+        <label for="title" class="form-label">title</label>
+        <input
+          type="text"
+          name="listing[title]"
+          placeholder="add a catchy title"
+          class="form-control"
+          required
+        />
+        <div class="valid-feedback">title looks good</div>
+      </div>
+
+      <div class="mb-3">
+        <label for="description" class="form-label">description</label>
+        <textarea
+          type="text"
+          name="listing[description]"
+          class="form-control"
+          required
+        ></textarea>
+      </div>
+
+      <div class="mb-3">
+        <label for="image" class="form-label">upload image</label>
+        <input type="file" name="listing[image]" class="form-control" />
+      </div>
+
+      <div class="row">
+        <div class="mb-3 col-md-4">
+          <label for="price" class="form-label">price</label>
+          <input
+            type="text"
+            name="listing[price]"
+            placeholder="1200"
+            class="form-control"
+            required
+          />
+        </div>
+
+        <div class="mb-3 col-md-8">
+          <label for="country" class="form-label">country</label>
+          <input
+            type="text"
+            name="listing[country]"
+            placeholder="india"
+            class="form-control"
+            required
+          />
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="location" class="form-label">location</label>
+        <textarea
+          type="text"
+          name="listing[location]"
+          class="form-control"
+          placeholder="jaipur,rajasthan"
+          required
+        ></textarea>
+      </div>
+
+      <button class="btn btn-dark add-btn">Add</button>
+    </form>
+  </div>
+</div>
+
+<script src="/script.js"></script>
